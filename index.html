@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Judul disesuaikan dengan nama organisasi dari logo --><title>BRIGPASNESAGA | Paskibra SMP Negeri 1 Gabuswetan</title>
+    
+    <!-- Memuat Tailwind CSS untuk styling --><script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Memuat Lucide Icons (untuk ikon menu, dll.) --><script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Ganti Font ke Poppins (Lebih Elegan & Modern) --><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Palet Warna Baru: Dark Navy & Gold */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1C2331; /* Dark Navy/Charcoal */
+            color: #E0E6F0; /* Off-white/Silver */
+        }
+        /* Sembunyikan semua halaman/section secara default */
+        .page-content {
+            display: none;
+            opacity: 0; /* Mulai dengan opacity 0 untuk animasi fade */
+            transform: translateY(10px); /* Sedikit geser ke bawah untuk efek slide-up */
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Transisi untuk opacity dan transform */
+        }
+        /* Tampilkan halaman yang aktif */
+        .page-content.active {
+            display: block;
+            opacity: 1; /* Transisi ke opacity 1 */
+            transform: translateY(0); /* Kembali ke posisi normal */
+        }
+        /* Transisi untuk sidebar */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        /* Efek Shadow/Glow dihilangkan, diganti dengan warna Gold/Crimson yang elegan */
+        .text-accent-gold {
+            color: #D4AF37; /* Gold Accent */
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); /* Shadow tipis untuk kedalaman */
+        }
+        .text-accent-crimson {
+            color: #A52A2A; /* Crimson/Merah Marun */
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); 
+        }
+        /* Gaya hover untuk link navigasi */
+        .nav-link.active, .nav-link:hover {
+            background-color: #A52A2A; /* Crimson */
+            color: #FFFFFF; /* Putih */
+            transform: translateX(5px); /* Sedikit geser ke kanan saat hover/aktif */
+        }
+        .nav-link {
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        /* Style untuk card di mode gelap */
+        .bg-card-dark {
+            background-color: #283241; /* Slightly lighter than body background */
+            border: 1px solid #3A4557;
+        }
+        .bg-card-dark-highlight {
+            background-color: #3A4557;
+            border: 1px solid #4D596B;
+        }
+        /* Gaya khusus untuk table header di mode gelap */
+        .dark-table-header {
+            background-color: #3A4557;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- 1. HEADER & TOMBOL MENU --><header class="bg-gray-900 shadow-xl sticky top-0 z-50 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo / Nama Organisasi --><div class="flex-shrink-0">
+                    <span class="text-xl font-bold text-accent-gold">BRIGPASNESAGA</span>
+                    <!-- Anda bisa ganti [Nama Sekolah] --><span class="text-xl font-medium text-gray-400 ml-2">SMPN 1 Gabuswetan</span> 
+                </div>
+                <!-- Tombol Menu "Garis Tiga" --><div class="flex items-center">
+                    <button id="menu-open-btn" class="p-2 rounded-md text-gray-300 hover:text-accent-gold hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent-gold">
+                        <span class="sr-only">Buka menu utama</span>
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. SIDEBAR MENU (Menu tersembunyi) --><div id="sidebar-backdrop" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden"></div>
+    <div id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-[#141A24] text-white z-[60] shadow-xl transform -translate-x-full border-r border-gray-700">
+        <!-- Header Sidebar dengan Tombol Close --><div class="flex justify-between items-center p-4 border-b border-gray-700">
+            <span class="text-lg font-semibold text-accent-gold">NAVIGASI</span>
+            <button id="menu-close-btn" class="p-1 rounded-md hover:bg-gray-700 text-gray-300">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <!-- Link Navigasi --><nav class="p-4 space-y-2">
+            <a href="#home" data-page="home" class="nav-link flex items-center px-3 py-2 rounded-md text-gray-200">
+                <i data-lucide="home" class="w-5 h-5 mr-3"></i>
+                Beranda
+            </a>
+            <a href="#galeri" data-page="galeri" class="nav-link flex items-center px-3 py-2 rounded-md text-gray-200">
+                <i data-lucide="gallery-vertical" class="w-5 h-5 mr-3"></i>
+                Galeri
+            </a>
+            <a href="#prestasi" data-page="prestasi" class="nav-link flex items-center px-3 py-2 rounded-md text-gray-200">
+                <i data-lucide="trophy" class="w-5 h-5 mr-3"></i>
+                Prestasi
+            </a>
+            <a href="#struktur" data-page="struktur" class="nav-link flex items-center px-3 py-2 rounded-md text-gray-200">
+                <i data-lucide="users" class="w-5 h-5 mr-3"></i>
+                Struktur Organisasi
+            </a>
+        </nav>
+    </div>
+
+    <!-- 3. KONTEN UTAMA (Tempat Halaman-Halaman Muncul) --><main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ============================================= --><!--                HALAMAN BERANDA                --><!-- ============================================= --><section id="home" class="page-content">
+            <div class="bg-card-dark p-6 md:p-10 rounded-xl shadow-lg">
+                <div class="flex flex-col items-center mb-8">
+                    <!-- LOGO DARI FILE YANG DIUPLOAD, DIBUAT BULAT --><!-- Ganti URL ini jika Anda meng-host gambar di tempat lain --><img src="https://files.catbox.moe/nretmz.jpg" alt="Logo Paskibra Brigpasnesaga" class="w-48 h-48 sm:w-64 sm:h-64 object-cover rounded-full border-4 border-accent-gold shadow-lg mb-6 animate-pulse" />
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-accent-gold mb-6 text-center">BRIGPASNESAGA</h1>
+                    <p class="text-lg text-gray-400 mb-8 text-center max-w-2xl">
+                        Selamat datang di Website Resmi Pasukan Pengibar Bendera SMP Negeri 1 Gabuswetan!
+                    </p>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-accent-crimson mb-3">Apa itu Paskibra?</h2>
+                <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                    Paskibra, singkatan dari Pasukan Pengibar Bendera, adalah sebuah organisasi ekstrakurikuler yang berfokus pada pelatihan baris-berbaris dan tata cara pengibaran bendera. Lebih dari itu, Paskibra adalah kawah candradimuka untuk membentuk generasi muda yang memiliki disiplin tinggi, mental yang kuat, rasa cinta tanah air, dan jiwa kepemimpinan.
+                </p>
+
+                <h2 class="text-2xl font-bold text-accent-crimson mb-3">Apa Saja Kegiatannya?</h2>
+                <p class="text-lg text-gray-300 leading-relaxed mb-4">
+                    Kegiatan kami tidak hanya latihan untuk upacara hari Senin. Kami juga melakukan:
+                </p>
+                <ul class="list-disc list-inside text-lg text-gray-300 space-y-2 leading-relaxed">
+                    <li><b>Latihan Fisik dan Mental:</b> Membangun ketahanan, kekuatan, dan kedisiplinan pribadi.</li>
+                    <li><b>Latihan Baris-Berbaris (PBB):</b> Melatih kekompakan, ketertiban, dan keindahan gerakan.</li>
+                    <li><b>Tata Upacara Bendera (TUB):</b> Mempelajari dan mempraktikkan seluruh elemen upacara bendera sesuai aturan yang berlaku.</li>
+                    <li><b>Mengikuti Lomba:</b> Berkompetisi dalam Lomba Keterampilan Baris-Berbaris (LKBB) untuk menguji kemampuan dan mental juara.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============================================= --><!--                HALAMAN GALERI                 --><!-- ============================================= --><section id="galeri" class="page-content">
+            <div class="bg-card-dark p-6 md:p-10 rounded-xl shadow-lg">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-accent-gold mb-6">Galeri Kenangan</h1>
+                <p class="text-lg text-gray-400 mb-8">Momen-momen terbaik yang berhasil kami abadikan.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- FOTO 1 - GANTI `src` DENGAN LINK FOTO ANDA --><div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 bg-card-dark-highlight">
+                        <img src="https://files.catbox.moe/ao0fg8.jpg" 
+                             alt="Pelantikan Angkatan 12" 
+                             class="w-full h-64 object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/3A4557/E0E6F0?text=FOTO+GAGAL+DIMUAT'">
+                        <div class="p-4 bg-[#1C2331] border-t border-gray-700">
+                            <h3 class="font-semibold text-gray-200">Pelantikan Angkatan 12 Capas Ke Paskibra</h3>
+                            <p class="text-sm text-gray-400">Dokumentasi Kegiatan.</p>
+                        </div>
+                    </div>
+
+                    <!-- FOTO 2 - GANTI `src` DENGAN LINK FOTO ANDA --><div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 bg-card-dark-highlight">
+                        <img src="https://files.catbox.moe/0qi2j4.jpg" 
+                             alt="Latihan Rutin Ekstrakurikuler" 
+                             class="w-full h-64 object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/3A4557/E0E6F0?text=FOTO+GAGAL+DIMUAT'">
+                        <div class="p-4 bg-[#1C2331] border-t border-gray-700">
+                            <h3 class="font-semibold text-gray-200">Latihan Rutin</h3>
+                            <p class="text-sm text-gray-400">Foto Setelah Latihan .</p>
+                        </div>
+                    </div>
+
+                    <!-- FOTO 3 - GANTI `src` DENGAN LINK FOTO ANDA --><div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 bg-card-dark-highlight">
+                        <img src="https://files.catbox.moe/5qga8z.jpg" 
+                             alt="Foto Penyerahan Piala Lomba" 
+                             class="w-full h-64 object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/3A4557/E0E6F0?text=FOTO+GAGAL+DIMUAT'">
+                        <div class="p-4 bg-[#1C2331] border-t border-gray-700">
+                            <h3 class="font-semibold text-gray-200">LKBB SPECTRA</h3>
+                            <p class="text-sm text-gray-400">Pasukan A Dan B.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 bg-card-dark-highlight">
+                        <img src="https://files.catbox.moe/9290dk.jpg" 
+                             alt="Foto Sebelum Tampil Demonstrasi Eskul" 
+                             class="w-full h-64 object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/3A4557/E0E6F0?text=FOTO+GAGAL+DIMUAT'">
+                        <div class="p-4 bg-[#1C2331] border-t border-gray-700">
+                            <h3 class="font-semibold text-gray-200">Demonstrasi Eskul</h3>
+                            <p class="text-sm text-gray-400">Pasukan A Dan B.</p>
+                        </div>
+                    </div>
+                    <!-- Tambahkan lebih banyak foto di sini dengan format yang sama --></div>
+            </div>
+        </section>
+
+        <!-- ============================================= --><!--               HALAMAN PRESTASI                --><!-- ============================================= --><section id="prestasi" class="page-content">
+            <div class="bg-card-dark p-6 md:p-10 rounded-xl shadow-lg">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-accent-gold mb-6">Piala dan Prestasi</h1>
+                <p class="text-lg text-gray-400 mb-8">Hasil dari keringat, disiplin, dan kerja keras Pasukan.</p>
+
+                <div class="space-y-6">
+
+                    <!-- PRESTASI 1 - GANTI DATA DI BAWAH INI --><div class="flex items-start space-x-4 p-4 border border-gray-700 rounded-lg bg-card-dark-highlight">
+                        <div class="flex-shrink-0">
+                            <i data-lucide="award" class="w-10 h-10 text-accent-gold"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-100">Juara Mula 2 - LKBB SPECTRA</h3>
+                            <p class="text-gray-400">Lomba Keterampilan Baris-Berbaris tingkat Provinsi yang diselenggarakan oleh Paskibra SMK PUI JATIBARANG.</p>
+                        </div>
+                    </div>
+
+                    <!-- PRESTASI 2 - GANTI DATA DI BAWAH INI --><div class="flex items-start space-x-4 p-4 border border-gray-700 rounded-lg bg-card-dark-highlight">
+                        <div class="flex-shrink-0">
+                            <i data-lucide="award" class="w-10 h-10 text-accent-gold"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-100">Juara Perintis 1 - LKBB SPECTRA</h3>
+                            <p class="text-gray-400">Lomba Keterampilan Baris-Berbaris tingkat Provinsi yang diselenggarakan oleh Paskibra SMK PUI JATIBARANG.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- PRESTASI 3 - GANTI DATA DI BAWAH INI --><div class="flex items-start space-x-4 p-4 border border-gray-700 rounded-lg bg-card-dark-highlight">
+                        <div class="flex-shrink-0">
+                            <i data-lucide="award" class="w-10 h-10 text-accent-gold"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-100">Juara Votting Qris 3 - LKBB SPECTRA</h3>
+                            <p class="text-gray-400">Lomba Keterampilan Baris-Berbaris tingkat Provinsi yang diselenggarakan oleh Paskibra SMK PUI JATIBARANG.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4 p-4 border border-gray-700 rounded-lg bg-card-dark-highlight">
+                        <div class="flex-shrink-0">
+                            <i data-lucide="award" class="w-10 h-10 text-accent-gold"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-100">Juara Ter Antusias  - LKBB SPECTRA</h3>
+                            <p class="text-gray-400">Lomba Keterampilan Baris-Berbaris tingkat Provinsi yang diselenggarakan oleh Paskibra SMK PUI JATIBARANG.</p>
+                        </div>
+                    </div>
+                    <!-- Tambahkan lebih banyak prestasi di sini --></div>
+            </div>
+        </section>
+
+        <!-- ============================================= --><!--              HALAMAN STRUKTUR                 --><!-- ============================================= --><section id="struktur" class="page-content">
+            <div class="bg-card-dark p-6 md:p-10 rounded-xl shadow-lg">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-accent-gold mb-6">Struktur Organisasi</h1>
+                <p class="text-lg text-gray-400 mb-8">Pejabat Teras Paskibra SMP Negeri 1 Gabuswetan periode 2025/2026</p>
+
+                <!-- Tabel Struktur Organisasi --><div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-700">
+                        <thead class="dark-table-header">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                    Jabatan
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                    Nama
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-card-dark divide-y divide-gray-700">
+                            
+                            <!-- DATA STRUKTUR YANG SUDAH DIISI --><tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-accent-crimson">Pembina Putra</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Muhammad Jamal Baligh</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-accent-crimson">Pembina Putri</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Meisfa Ayu Ningtyas</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-accent-crimson">Pelatih</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Annazlu Al-Musthofa </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-accent-gold">Komsat (Komandan Satu)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Soni</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-accent-gold">Wakomsat (Wakil Komandan Satu)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Naeva</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Sekretaris</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Meisya, Aini</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Bendahara</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Alya, Alodia</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Korlap (Koordinator Lapangan)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Ilham, Kartika</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Kormat (Koordinator Materi)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Adel, Reva</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Keagamaan</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Raihan, Ananda</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Kebersihan</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Niko,Aura,Chantika</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Kesehatan</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Debby,winda,wilda</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Humas (Hubungan Masyarakat)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Dara,Yunita,Afifah</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Dokumentasi</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-200">Riyan,Fitri,Chantya,Bilqis,Wilis</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 4. FOOTER --><footer class="bg-gray-950 text-white mt-12 py-8 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Footer text updated to use accent color --><p class="text-sm text-accent-gold">&copy; 2025 BRIGPASNESAGA - SMP Negeri 1 Gabuswetan.</p>
+            <p class="text-xs text-gray-500 mt-1">Dibuat Untuk Kepentingan Organisasi</p>
+        </div>
+    </footer>
+
+
+    <!-- 5. SCRIPT JAVASCRIPT (Untuk Navigasi) --><script>
+        // Inisialisasi Lucide Icons
+        lucide.createIcons();
+
+        // Ambil elemen-elemen yang dibutuhkan
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const openBtn = document.getElementById('menu-open-btn');
+        const closeBtn = document.getElementById('menu-close-btn');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page-content');
+
+        // Fungsi untuk membuka sidebar
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+
+        // Fungsi untuk menutup sidebar
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        }
+
+        // Fungsi untuk menampilkan halaman dengan animasi
+        function showPage(pageId) {
+            // Hilangkan kelas 'active' dari semua link navigasi
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Sembunyikan semua halaman
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Beri sedikit delay sebelum menambahkan kelas 'active' untuk memungkinkan transisi reset
+            setTimeout(() => {
+                const activePage = document.getElementById(pageId);
+                if (activePage) {
+                    activePage.classList.add('active');
+                }
+
+                // Tambahkan kelas 'active' ke link navigasi yang sesuai
+                const activeNavLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
+                if (activeNavLink) {
+                    activeNavLink.classList.add('active');
+                }
+            }, 50); // Delay kecil agar CSS transisi bisa bekerja dengan baik
+        }
+
+        // Event listener untuk tombol-tombol
+        openBtn.addEventListener('click', openSidebar);
+        closeBtn.addEventListener('click', closeSidebar);
+        backdrop.addEventListener('click', closeSidebar);
+
+        // Event listener untuk link navigasi
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Mencegah pindah halaman (karena kita SPA)
+                const pageId = link.getAttribute('data-page');
+                showPage(pageId);
+                closeSidebar(); // Tutup sidebar setelah link diklik
+                
+                // Ganti hash di URL tanpa me-reload halaman
+                history.pushState(null, '', `#${pageId}`);
+            });
+        });
+
+        // Tampilkan halaman yang sesuai saat pertama kali load (atau berdasarkan URL hash)
+        // dan set link navigasi yang aktif
+        let initialPage = window.location.hash.substring(1) || 'home';
+        showPage(initialPage);
+        
+    </script>
+</body>
+</html>
+    
